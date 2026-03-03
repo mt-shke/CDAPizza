@@ -5,7 +5,7 @@ services:
     container_name: db
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: true
-      MYSQL_DATABASE: ${DB_URL}
+      MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       LANG: C.UTF-8
