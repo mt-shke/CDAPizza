@@ -3,6 +3,7 @@ package com.example.demoapi.controller;
 import com.example.demoapi.model.User;
 import com.example.demoapi.repository.UserRepository;
 import com.example.demoapi.security.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,10 +50,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> login(HttpServletRequest request, @RequestBody Map<String, String> body) {
+        System.out.println("ORIGIN : " + request.getHeader("Origin"));
         String username = body.get("username");
         String password = body.get("password");
-
         try {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password));
