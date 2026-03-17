@@ -1,26 +1,37 @@
-DROP TABLE IF EXISTS tache;
-DROP TABLE IF EXISTS categorie;
+DROP TABLE IF EXISTS commande;
+DROP TABLE IF EXISTS pizza;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS contenir;
+
 
 CREATE TABLE IF NOT EXISTS user(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    Id_user    INT AUTO_INCREMENT PRIMARY KEY,
+    pseudo     VARCHAR(50) NOT NULL,
+    password   VARCHAR(50) NOT NULL,
+    email      VARCHAR(50) NOT NULL,
+    role       VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS categorie(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL
+CREATE TABLE IF NOT EXISTS pizza(
+                                        Id_pizza   INT AUTO_INCREMENT PRIMARY KEY,
+                                        nom        VARCHAR(50) NOT NULL,
+    prix       DECIMAL(15,2) NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS tache(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titre VARCHAR(200) NOT NULL,
-    description TEXT,
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_fin DATE, -- à préciser
-    categorie_id INT NOT NULL,
-    statut ENUM('A_FAIRE', 'EN_COURS', 'TERMINE') DEFAULT 'A_FAIRE',
-    FOREIGN KEY (categorie_id) REFERENCES categorie(id) ON UPDATE CASCADE ON DELETE RESTRICT
+CREATE TABLE IF NOT EXISTS commande(
+                                    Id_commande INT AUTO_INCREMENT PRIMARY KEY,
+                                    date       DATETIME NOT NULL DEFAULT NOW(),
+    montant     DECIMAL(15,2) NOT NULL,
+    etat        VARCHAR(50) NOT NULL DEFAULT 'PAYER',
+    Id_user     INT NOT NULL,
+    FOREIGN KEY (Id_user) REFERENCES user(Id_user)
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS contenir(
+                                       Id_commande INT NOT NULL,
+                                       Id_pizza    INT NOT NULL,
+                                       quantite    INT NOT NULL DEFAULT 1,
+                                       PRIMARY KEY (Id_commande, Id_pizza),
+    FOREIGN KEY (Id_commande) REFERENCES commande(Id_commande) ON DELETE CASCADE,
+    FOREIGN KEY (Id_pizza)    REFERENCES pizza(Id_pizza)
+    ) ENGINE=InnoDB;

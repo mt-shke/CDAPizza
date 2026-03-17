@@ -31,7 +31,6 @@ public class Tache {
 
     @ManyToOne
     @JoinColumn(name = "categorie_id", nullable = false)
-    private Categorie categorie;
 
     @PrePersist
     protected void onCreate() {
@@ -71,13 +70,6 @@ public class Tache {
         this.statut = statut;
     }
 
-    public Categorie getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(Categorie categorie) {
-        this.categorie = categorie;
-    }
 
     public LocalDateTime getDateCreation() {
         return dateCreation;

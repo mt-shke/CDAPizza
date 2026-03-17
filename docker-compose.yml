@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       LANG: C.UTF-8
     volumes:
-      - todolist_data_api:/var/lib/mysql
+      - cdapizza_data_api:/var/lib/mysql
     ports:
       - "3306:3306"
 
@@ -25,4 +25,4 @@ services:
       - "8084:80"
 
 volumes:
-  todolist_data_api:
+  cdapizza_data_api:
