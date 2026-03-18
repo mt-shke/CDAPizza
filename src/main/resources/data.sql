@@ -1,7 +1,7 @@
 INSERT INTO user (username, password, email, role) VALUES
-                                                      ('alice',  'alice123',  'alice@cdapizza.fr',  'caisse'),
-                                                      ('bob',    'bob123',    'bob@cdapizza.fr',    'cuisine'),
-                                                      ('carlos', 'carlos123', 'carlos@cdapizza.fr', 'caisse');
+                                                      ('client',  '$2a$10$nIrt2s7AvOSgKQrRvJcQau.lD0kL.886FNRh23K3OUgxvaRL2JSzW',  'client@email.com',  'client'),
+                                                      ('caisse',    '$2a$10$s8dVMwv3uKq/ySwonm2IIeBGh2QBvERG5UmIxE9dS4U/QjwKCQ.Nm',    'caisse@email.com',    'caisse'),
+                                                      ('cuisine', '$2a$10$d07nMNs6BdtHqvxkqzCSquixM1.AwFkW2DurckQEShX534fERkomC', 'cuisine@email.com', 'cuisine');
 
 INSERT INTO pizza (nom, prix) VALUES
                                   ('Margherita',   8.50),
