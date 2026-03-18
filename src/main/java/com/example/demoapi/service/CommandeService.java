@@ -1,7 +1,6 @@
 package com.example.demoapi.service;
 
 import com.example.demoapi.entity.Commande;
-import com.example.demoapi.entity.Tache;
 import com.example.demoapi.repository.CommandeRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class CommandeService {
         this.commandeRepository = commandeRepository;
     }
 
-    public List<Commande> findAll(){
+    public List<Commande> findAll() {
         return commandeRepository.findAll();
     }
 
@@ -30,8 +29,15 @@ public class CommandeService {
     }
 
     public Commande update(Long id, Commande commande) {
-        commande.setId(id);
-        return commandeRepository.save(commande);
+        return commandeRepository.findById(id)
+                .map(existing -> {
+                    existing.setDate(commande.getDate());
+                    existing.setMontant(commande.getMontant());
+                    existing.setEtat(commande.getEtat());
+                    existing.setId_user(commande.getId_user());
+                    return commandeRepository.save(existing);
+                })
+                .orElseThrow(() -> new RuntimeException("Commande non trouvée : " + id));
     }
 
     public void delete(Long id) {

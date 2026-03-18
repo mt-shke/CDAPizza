@@ -1,13 +1,13 @@
+DROP TABLE IF EXISTS contenir;
 DROP TABLE IF EXISTS commande;
 DROP TABLE IF EXISTS pizza;
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS contenir;
 
 
 CREATE TABLE IF NOT EXISTS user(
     Id_user    INT AUTO_INCREMENT PRIMARY KEY,
-    pseudo     VARCHAR(50) NOT NULL,
-    password   VARCHAR(50) NOT NULL,
+    username     VARCHAR(50) NOT NULL,
+    password   VARCHAR(255) NOT NULL,
     email      VARCHAR(50) NOT NULL,
     role       VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB;

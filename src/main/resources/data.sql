@@ -1,4 +1,4 @@
-INSERT INTO user (pseudo, password, email, role) VALUES
+INSERT INTO user (username, password, email, role) VALUES
                                                       ('alice',  'alice123',  'alice@cdapizza.fr',  'caisse'),
                                                       ('bob',    'bob123',    'bob@cdapizza.fr',    'cuisine'),
                                                       ('carlos', 'carlos123', 'carlos@cdapizza.fr', 'caisse');

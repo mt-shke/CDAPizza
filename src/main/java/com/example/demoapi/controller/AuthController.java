@@ -36,6 +36,8 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
+        String email = body.get("email");
+        String role = body.get("role");
 
         if (userRepository.findByUsername(username).isPresent()) {
             return ResponseEntity.badRequest().body("Utilisateur déjà existant");
@@ -44,6 +46,8 @@ public class AuthController {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        user.setEmail(email);
+        user.setRole(role);
         userRepository.save(user);
 
         return ResponseEntity.ok("Inscription réussie");
