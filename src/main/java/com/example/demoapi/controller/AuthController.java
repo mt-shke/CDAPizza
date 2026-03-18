@@ -58,14 +58,19 @@ public class AuthController {
         System.out.println("ORIGIN : " + request.getHeader("Origin"));
         String username = body.get("username");
         String password = body.get("password");
+
         try {
             authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password));
+                    new UsernamePasswordAuthenticationToken(username, password));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Identifiants invalides");
         }
 
-        String token = jwtUtil.generateToken(username);
+        // Récupère l'objet User complet pour avoir l'id et le role
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        String token = jwtUtil.generateToken(user);
         return ResponseEntity.ok(Map.of("token", token));
     }
 }
