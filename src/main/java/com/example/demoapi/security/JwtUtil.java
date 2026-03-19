@@ -1,5 +1,6 @@
 package com.example.demoapi.security;
 
+import com.example.demoapi.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -22,9 +23,11 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .subject(username)
+                .subject(user.getUsername())
+                .claim("id_user", user.getId())
+                .claim("role", user.getRole())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())
@@ -33,6 +36,14 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
         return getClaims(token).getSubject();
+    }
+
+    public Long extractUserId(String token) {
+        return Long.parseLong(getClaims(token).get("id_user").toString());
+    }
+
+    public String extractRole(String token) {
+        return getClaims(token).get("role").toString();
     }
 
     public boolean isTokenValid(String token) {
