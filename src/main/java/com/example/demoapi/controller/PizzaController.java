@@ -1,21 +1,26 @@
 package com.example.demoapi.controller;
-
 import com.example.demoapi.entity.Pizza;
+import com.example.demoapi.security.JwtUtil;
 import com.example.demoapi.service.PizzaService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/pizzas")
 public class PizzaController {
 
-    private final PizzaService pizzaService;
 
-    public PizzaController(PizzaService pizzaService) {
+    private final PizzaService pizzaService;
+    private final JwtUtil jwtUtil;
+
+    public PizzaController(PizzaService pizzaService, JwtUtil jwtUtil) {
         this.pizzaService = pizzaService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping
@@ -47,7 +52,15 @@ public class PizzaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id, HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String token = authHeader.substring(7);
+        String role = jwtUtil.extractRole(token);
+
+        if (!"cuisine".equals(role)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Accès refusé");
+        }
+
         return pizzaService.findById(id)
                 .map(p -> {
                     pizzaService.delete(id);
