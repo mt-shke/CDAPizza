@@ -12,7 +12,7 @@ public class Pizza {
     @Column(name = "Id_pizza")
     private Long id_pizza;
 
-    @Column(name = "nom", nullable = false)
+    @Column(name = "nom", nullable = false, unique = true)
     private String nom;
 
     @Column(name = "prix", nullable = false)

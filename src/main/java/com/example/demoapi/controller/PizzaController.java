@@ -31,8 +31,12 @@ public class PizzaController {
     }
 
     @PostMapping
-    public ResponseEntity<Pizza> create(@RequestBody Pizza pizza) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(pizzaService.create(pizza));
+    public ResponseEntity<?> create(@RequestBody Pizza pizza) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(pizzaService.create(pizza));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
