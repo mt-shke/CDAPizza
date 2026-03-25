@@ -31,8 +31,8 @@ INSERT INTO commande (date, montant, etat, Id_user) VALUES
 ('2026-03-17 09:15:00', 17.55,  'PREPARATION', 1),  -- commande 3 : 3ème -10%
 -- Michel
 ('2026-03-11 10:00:00', 20.00,  'LIVRER',      4),  -- commande 4 : normal
-('2026-03-14 12:30:00', 52.68,  'LIVRER',      4),  -- commande 5 : >5 pizzas -5%
-('2026-03-17 10:30:00', 30.83,  'PRETE',       4),  -- commande 6 : 3ème -10% ET >5 pizzas -5% = -15%
+('2026-03-14 12:30:00', 64.60,  'LIVRER',      4),  -- commande 5 : >5 pizzas -5%
+('2026-03-17 10:30:00', 50.15,  'PRETE',       4),  -- commande 6 : 3ème -10% ET >5 pizzas -5% = -15%
 -- Sophie
 ('2026-03-10 14:00:00', 9.50,   'LIVRER',      5),  -- commande 7 : normal
 ('2026-03-13 16:00:00', 57.00,  'LIVRER',      5),  -- commande 8 : >5 pizzas -5%
