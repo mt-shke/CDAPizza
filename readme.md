@@ -1,3 +1,5 @@
+```
+
 === COMMANDES ===
 GET    /api/commandes                        - Liste toutes les commandes
 GET    /api/commandes/{id}                   - Récupère une commande par id
@@ -18,3 +20,5 @@ GET    /api/contenir/commande/{id_commande}             - Liste toutes les pizza
 POST   /api/contenir                                    - Ajoute une pizza à une commande
 PUT    /api/contenir/{idCommande}/{idPizza}             - Modifie la quantité d'une ligne
 DELETE /api/contenir/{idCommande}/{idPizza}             - Supprime une ligne de commande
+
+```

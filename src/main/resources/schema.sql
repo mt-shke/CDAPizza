@@ -13,14 +13,14 @@ CREATE TABLE IF NOT EXISTS user(
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS pizza(
-                                        Id_pizza   INT AUTO_INCREMENT PRIMARY KEY,
-                                        nom        VARCHAR(50) NOT NULL,
+    Id_pizza   INT AUTO_INCREMENT PRIMARY KEY,
+    nom        VARCHAR(50) NOT NULL UNIQUE,
     prix       DECIMAL(15,2) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS commande(
-                                    Id_commande INT AUTO_INCREMENT PRIMARY KEY,
-                                    date       DATETIME NOT NULL DEFAULT NOW(),
+    Id_commande INT AUTO_INCREMENT PRIMARY KEY,
+    date       DATETIME NOT NULL DEFAULT NOW(),
     montant     DECIMAL(15,2) NOT NULL,
     etat        VARCHAR(50) NOT NULL DEFAULT 'PAYER',
     Id_user     INT NOT NULL,
@@ -28,10 +28,10 @@ CREATE TABLE IF NOT EXISTS commande(
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS contenir(
-                                       Id_commande INT NOT NULL,
-                                       Id_pizza    INT NOT NULL,
-                                       quantite    INT NOT NULL DEFAULT 1,
-                                       PRIMARY KEY (Id_commande, Id_pizza),
+    Id_commande INT NOT NULL,
+    Id_pizza    INT NOT NULL,
+    quantite    INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (Id_commande, Id_pizza),
     FOREIGN KEY (Id_commande) REFERENCES commande(Id_commande) ON DELETE CASCADE,
     FOREIGN KEY (Id_pizza)    REFERENCES pizza(Id_pizza)
     ) ENGINE=InnoDB;

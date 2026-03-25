@@ -3,7 +3,7 @@ package com.example.demoapi.service;
 import com.example.demoapi.entity.Pizza;
 import com.example.demoapi.repository.PizzaRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.dao.DataIntegrityViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +25,11 @@ public class PizzaService {
     }
 
     public Pizza create(Pizza pizza) {
-        return pizzaRepository.save(pizza);
+        try {
+            return pizzaRepository.save(pizza);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("Une pizza avec ce nom existe déjà");
+        }
     }
 
     public Pizza update(Long id, Pizza pizza) {
