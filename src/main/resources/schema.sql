@@ -6,9 +6,9 @@ DROP TABLE IF EXISTS user;
 
 CREATE TABLE IF NOT EXISTS user(
     Id_user    INT AUTO_INCREMENT PRIMARY KEY,
-    username     VARCHAR(50) NOT NULL,
+    username     VARCHAR(50) NOT NULL UNIQUE,
     password   VARCHAR(255) NOT NULL,
-    email      VARCHAR(50) NOT NULL,
+    email      VARCHAR(50) NOT NULL UNIQUE,
     role       VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB;
 
