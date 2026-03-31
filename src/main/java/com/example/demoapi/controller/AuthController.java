@@ -1,14 +1,17 @@
 package com.example.demoapi.controller;
 
+import com.example.demoapi.dto.RegisterRequest;
 import com.example.demoapi.model.User;
 import com.example.demoapi.repository.UserRepository;
 import com.example.demoapi.security.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -32,22 +35,32 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
-        String username = body.get("username");
-        String password = body.get("password");
-        String email = body.get("email");
-        String role = body.get("role");
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(e -> e.getDefaultMessage())
+                .findFirst()
+                .orElse("Erreur de validation");
+        return ResponseEntity.badRequest().body(message);
+    }
 
-        if (userRepository.findByUsername(username).isPresent()) {
-            return ResponseEntity.badRequest().body("Utilisateur déjà existant");
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest body) {
+
+        if (userRepository.findByUsername(body.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("Ce nom d'utilisateur est déjà pris");
+        }
+
+        if (userRepository.findByEmail(body.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Cette adresse email est déjà utilisée");
         }
 
         User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setEmail(email);
-        user.setRole(role);
+        user.setUsername(body.getUsername());
+        user.setPassword(passwordEncoder.encode(body.getPassword()));
+        user.setEmail(body.getEmail());
+        user.setRole(body.getRole() != null ? body.getRole() : "client");
+
         userRepository.save(user);
 
         return ResponseEntity.ok("Inscription réussie");
@@ -66,7 +79,6 @@ public class AuthController {
             return ResponseEntity.status(401).body("Identifiants invalides");
         }
 
-        // Récupère l'objet User complet pour avoir l'id et le role
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
