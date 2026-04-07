@@ -53,10 +53,22 @@ public class PizzaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id, HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        String token = authHeader.substring(7);
-        String role = jwtUtil.extractRole(token);
+        // Lit le token depuis le cookie au lieu du header
+        String token = null;
+        if (request.getCookies() != null) {
+            for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
 
+        if (token == null || !jwtUtil.isTokenValid(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Non authentifié");
+        }
+
+        String role = jwtUtil.extractRole(token);
         if (!"cuisine".equals(role)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Accès refusé");
         }
